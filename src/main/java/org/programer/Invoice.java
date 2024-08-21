@@ -4,16 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Optional;
-public class Invoce {
+public class Invoice {
     @Getter @Setter
-    private String invoceNumber;
+    private String invoiceNumber;
     @Getter @Setter
     private int amount;
     @Getter @Setter
-    private Optional<Emplayee> emp;
+    private Optional<Employee> emp;
 
-    public Invoce(String invoceNumber, int amount, Emplayee emp) {
-        this.invoceNumber = invoceNumber;
+    public Invoice(String invoiceNumber, int amount, Employee emp) {
+        this.invoiceNumber = invoiceNumber;
         this.amount = amount;
         this.emp = Optional.ofNullable(emp); // Permite que emp sea nulo y lo convierte en Optional
     }

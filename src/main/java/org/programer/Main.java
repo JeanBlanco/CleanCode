@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public class Main {
         public static void main(String[] args) {
-            List<Emplayee> employees = createEmployees();
-            List<Invoce> invoices = generateInvoices(employees);
+            List<Employee> employees = createEmployees();
+            List<Invoice> invoices = generateInvoices(employees);
 
             double totalSalaries = calculateTotalSalaries(employees);
             System.out.println("Total salaries: " + totalSalaries);
 
-            Optional<Emplayee> highestPaidEmployee = findHighestPaidEmployee(employees);
+            Optional<Employee> highestPaidEmployee = findHighestPaidEmployee(employees);
             highestPaidEmployee.ifPresent(employee -> {
                 StringBuilder highestSalaryInfo = new StringBuilder()
                         .append("Employee with highest salary: ")
@@ -28,36 +28,36 @@ public class Main {
             System.out.println("Valid Invoices: " + validInvoicesCount);
         }
 
-        private static double calculateTotalSalaries(List<Emplayee> employees) {
+        private static double calculateTotalSalaries(List<Employee> employees) {
             return employees.stream()
-                    .mapToDouble(Emplayee::calculateAdjustedSalary)
+                    .mapToDouble(Employee::calculateAdjustedSalary)
                     .sum();
         }
 
-        private static Optional<Emplayee> findHighestPaidEmployee(List<Emplayee> employees) {
+        private static Optional<Employee> findHighestPaidEmployee(List<Employee> employees) {
             return employees.stream()
-                    .max(Comparator.comparingDouble(Emplayee::calculateAdjustedSalary));
+                    .max(Comparator.comparingDouble(Employee::calculateAdjustedSalary));
         }
 
-        private static long countValidInvoices(List<Invoce> invoices) {
+        private static long countValidInvoices(List<Invoice> invoices) {
             return invoices.stream()
-                    .filter(Invoce::isValidInvoice)
+                    .filter(Invoice::isValidInvoice)
                     .count();
         }
 
-        private static List<Emplayee> createEmployees() {
+        private static List<Employee> createEmployees() {
             return Arrays.asList(
-                    new Emplayee("John", "Doe", 50000, 1975),
-                    new Emplayee("Jane", "Smith", 60000, 1985),
-                    new Emplayee("Jim", "Beam", 70000, 1990)
+                    new Employee("John", "Doe", 50000, 1975),
+                    new Employee("Jane", "Smith", 60000, 1985),
+                    new Employee("Jim", "Beam", 70000, 1990)
             );
         }
 
-        private static List<Invoce> generateInvoices(List<Emplayee> employees) {
+        private static List<Invoice> generateInvoices(List<Employee> employees) {
             return Arrays.asList(
-                    new Invoce("INV001", 1500, employees.get(0)),
-                    new Invoce("INV002", 2500, employees.get(1)),
-                    new Invoce("INV003", 3500, employees.get(2))
+                    new Invoice("INV001", 1500, employees.get(0)),
+                    new Invoice("INV002", 2500, employees.get(1)),
+                    new Invoice("INV003", 3500, employees.get(2))
             );
         }
     }

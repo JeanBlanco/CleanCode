@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public class Emplayee {
+public class Employee {
     @Getter @Setter
     private String name;
     @Getter @Setter
@@ -15,7 +15,7 @@ public class Emplayee {
     private int yearOfBirth;
 
 
-    public Emplayee(String name, String lastName, int salaries, int yearOf_birth) {
+    public Employee(String name, String lastName, int salaries, int yearOf_birth) {
         this.name = name;
         this.lastName = lastName;
         this.salaries = salaries;
