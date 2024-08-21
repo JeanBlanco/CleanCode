@@ -3,79 +3,64 @@ package org.programer;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
 
 public class Main {
-    public static void main(String[] args) {
-        List<Empleado> employees = createEmployees();
-        List<Factura> invoices = generateInvoices(employees);
+        public static void main(String[] args) {
+            List<Emplayee> employees = createEmployees();
+            List<Invoce> invoices = generateInvoices(employees);
 
-        double totalSalaries = calculateTotalSalaries(employees);
-        System.out.println("Total salaries: " + totalSalaries);
+            double totalSalaries = calculateTotalSalaries(employees);
+            System.out.println("Total salaries: " + totalSalaries);
 
-        Empleado highestPaidEmployee = findHighestPaidEmployee(employees);
-        if (highestPaidEmployee != null) {
-            StringBuilder highestSalaryInfo = new StringBuilder()
-                    .append("Employee with highest salary: ")
-                    .append(highestPaidEmployee.getFullName())
-                    .append(", Salary: ")
-                    .append(highestPaidEmployee.getSalaries());
-            System.out.println(highestSalaryInfo.toString());
+            Optional<Emplayee> highestPaidEmployee = findHighestPaidEmployee(employees);
+            highestPaidEmployee.ifPresent(employee -> {
+                StringBuilder highestSalaryInfo = new StringBuilder()
+                        .append("Employee with highest salary: ")
+                        .append(employee.getFullName())
+                        .append(", Salary: ")
+                        .append(employee.calculateAdjustedSalary());
+                System.out.println(highestSalaryInfo);
+            });
+
+            long validInvoicesCount = countValidInvoices(invoices);
+            System.out.println("Valid Invoices: " + validInvoicesCount);
         }
 
-        long validInvoicesCount = countValidInvoices(invoices);
-        System.out.println("Valid Invoices: " + validInvoicesCount);
-    }
-
-    private static double calculateTotalSalaries(List<Empleado> employees) {
-        return employees.stream()
-                .mapToDouble(Main::calculateAdjustedSalary)
-                .sum();
-    }
-
-    private static Empleado findHighestPaidEmployee(List<Empleado> employees) {
-        return employees.stream()
-                .max(Comparator.comparingDouble(Main::calculateAdjustedSalary))
-                .orElse(null);
-    }
-
-    private static long countValidInvoices(List<Factura> invoices) {
-        return invoices.stream()
-                .filter(Main::isValidInvoice)
-                .count();
-    }
-
-    private static double calculateAdjustedSalary(Empleado employee) {
-        int age = 2024 - employee.getYearOf_birth();
-        double salary = employee.getSalaries();
-        if (age > 40) {
-            salary += salary * 0.05; // Agregar 5% si el empleado tiene más de 40 años
+        private static double calculateTotalSalaries(List<Emplayee> employees) {
+            return employees.stream()
+                    .mapToDouble(Emplayee::calculateAdjustedSalary)
+                    .sum();
         }
-        return salary;
-    }
 
-    private static boolean isValidInvoice(Factura invoice) {
-        return invoice.getAmount() > 1000 &&
-                invoice.getEmp() != null &&
-                invoice.getEmp().getSalaries() > 60000;
-    }
+        private static Optional<Emplayee> findHighestPaidEmployee(List<Emplayee> employees) {
+            return employees.stream()
+                    .max(Comparator.comparingDouble(Emplayee::calculateAdjustedSalary));
+        }
 
-    private static List<Empleado> createEmployees() {
-        return Arrays.asList(
-                new Empleado("John", "Doe", 50000, 1975),
-                new Empleado("Jane", "Smith", 60000, 1985),
-                new Empleado("Jim", "Beam", 70000, 1990)
-        );
-    }
+        private static long countValidInvoices(List<Invoce> invoices) {
+            return invoices.stream()
+                    .filter(Invoce::isValidInvoice)
+                    .count();
+        }
 
-    private static List<Factura> generateInvoices(List<Empleado> employees) {
-        return Arrays.asList(
-                new Factura("INV001", 1500, employees.get(0)),
-                new Factura("INV002", 2500, employees.get(1)),
-                new Factura("INV003", 3500, employees.get(2))
-        );
+        private static List<Emplayee> createEmployees() {
+            return Arrays.asList(
+                    new Emplayee("John", "Doe", 50000, 1975),
+                    new Emplayee("Jane", "Smith", 60000, 1985),
+                    new Emplayee("Jim", "Beam", 70000, 1990)
+            );
+        }
 
+        private static List<Invoce> generateInvoices(List<Emplayee> employees) {
+            return Arrays.asList(
+                    new Invoce("INV001", 1500, employees.get(0)),
+                    new Invoce("INV002", 2500, employees.get(1)),
+                    new Invoce("INV003", 3500, employees.get(2))
+            );
+        }
     }
-}
 
 /*
  * Total salarial: 18250
